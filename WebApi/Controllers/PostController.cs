@@ -15,28 +15,33 @@ public class PostController : ControllerBase
         _service = service;
     }
     [HttpPost("AddPost")]
-    public async Task<GetPostDto> AddPost(AddPostDto post)
+    public async Task<IActionResult> AddPost(AddPostDto post)
     {
-        return await _service.AddPost(post);
+        var result = await _service.AddPost(post);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpPut("UpdatePost")]
-    public async Task<GetPostDto> UpdatePost(AddPostDto post)
+    public async Task<IActionResult> UpdatePost(AddPostDto post)
     {
-        return await _service.UpdatePost(post);
+        var result = await _service.UpdatePost(post);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpDelete("DeletePost")]
-    public async Task<bool> DeletePost(int id)
+    public async Task<IActionResult> DeletePost(int id)
     {
-        return await _service.DeletePost(id);
+        var result = await _service.DeletePost(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("GetPostById")]
-    public async Task<GetPostDto> GetPostById(int id)
+    public async Task<IActionResult> GetPostById(int id)
     {
-        return await _service.GetPostById(id);
+        var result = await _service.GetPostById(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("GetPosts")]
-    public async Task<List<GetPostDto>> GetPosts()
+    public async Task<IActionResult> GetPosts()
     {
-        return await _service.GetPosts();
+        var result = await _service.GetPosts();
+        return StatusCode((int)result.StatusCode, result);
     }
 }

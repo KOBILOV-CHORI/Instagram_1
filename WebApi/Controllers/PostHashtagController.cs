@@ -15,28 +15,33 @@ public class PostHashtagController : ControllerBase
         _service = service;
     }
     [HttpPost("AddPostHashtag")]
-    public async Task<GetPostHashtagDto> AddPostHashtag(AddPostHashtagDto postHashtag)
+    public async Task<IActionResult> AddPostHashtag(AddPostHashtagDto postHashtag)
     {
-        return await _service.AddPostHashtag(postHashtag);
+        var result = await _service.AddPostHashtag(postHashtag);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpPut("UpdatePostHashtag")]
-    public async Task<GetPostHashtagDto> UpdatePostHashtag(AddPostHashtagDto postHashtag)
+    public async Task<IActionResult> UpdatePostHashtag(AddPostHashtagDto postHashtag)
     {
-        return await _service.UpdatePostHashtag(postHashtag);
+        var result = await _service.UpdatePostHashtag(postHashtag);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpDelete("DeletePostHashtag")]
-    public async Task<bool> DeletePostHashtag(int id)
+    public async Task<IActionResult> DeletePostHashtag(int id)
     {
-        return await _service.DeletePostHashtag(id);
+        var result = await _service.DeletePostHashtag(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("GetPostHashtagById")]
-    public async Task<GetPostHashtagDto> GetPostHashtagById(int id)
+    public async Task<IActionResult> GetPostHashtagById(int id)
     {
-        return await _service.GetPostHashtagById(id);
+        var result = await _service.GetPostHashtagById(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("GetPostHashtags")]
-    public async Task<List<GetPostHashtagDto>> GetPostHashtags()
+    public async Task<IActionResult> GetPostHashtags()
     {
-        return await _service.GetPostHashtags();
+        var result = await _service.GetPostHashtags();
+        return StatusCode((int)result.StatusCode, result);
     }
 }

@@ -15,28 +15,33 @@ public class FollowerController : ControllerBase
         _service = service;
     }
     [HttpPost("AddFollower")]
-    public async Task<GetFollowerDto> AddFollower(AddFollowerDto follower)
+    public async Task<IActionResult> AddFollower(AddFollowerDto follower)
     {
-        return await _service.AddFollower(follower);
+        var result = await _service.AddFollower(follower);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpPut("UpdateFollower")]
-    public async Task<GetFollowerDto> UpdateFollower(AddFollowerDto follower)
+    public async Task<IActionResult> UpdateFollower(AddFollowerDto follower)
     {
-        return await _service.UpdateFollower(follower);
+        var result = await _service.UpdateFollower(follower);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpDelete("DeleteFollower")]
-    public async Task<bool> DeleteFollower(int id)
+    public async Task<IActionResult> DeleteFollower(int id)
     {
-        return await _service.DeleteFollower(id);
+        var result = await _service.DeleteFollower(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("GetFollowerById")]
-    public async Task<GetFollowerDto> GetFollowerById(int id)
+    public async Task<IActionResult> GetFollowerById(int id)
     {
-        return await _service.GetFollowerById(id);
+        var result = await _service.GetFollowerById(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("GetFollowers")]
-    public async Task<List<GetFollowerDto>> GetFollowers()
+    public async Task<IActionResult> GetFollowers()
     {
-        return await _service.GetFollowers();
+        var result = await _service.GetFollowers();
+        return StatusCode((int)result.StatusCode, result);
     }
 }

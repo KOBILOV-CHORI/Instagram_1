@@ -1,5 +1,4 @@
 using Domain.Dtos.CommentDtos;
-using Domain.Wrapper;
 using Infrastructure.Services.CommentService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,28 +15,33 @@ public class CommentController : ControllerBase
     }
 
     [HttpPost("AddComment")]
-    public async Task<Responce<GetCommentDto>> AddComment(AddCommentDto comment)
+    public async Task<IActionResult> AddComment(AddCommentDto comment)
     {
-        return await _service.AddComment(comment);
+        var result = await _service.AddComment(comment);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpPut("UpdateComment")]
-    public async Task<Responce<GetCommentDto>> UpdateComment(AddCommentDto comment)
+    public async Task<IActionResult> UpdateComment(AddCommentDto comment)
     {
-        return await _service.UpdateComment(comment);
+        var result = await _service.UpdateComment(comment);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpDelete("DeleteComment")]
-    public async Task<Responce<bool>> DeleteComment(int id)
+    public async Task<IActionResult> DeleteComment(int id)
     {
-        return await _service.DeleteComment(id);
+        var result = await _service.DeleteComment(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("GetCommentById")]
-    public async Task<Responce<GetCommentDto>> GetCommentById(int id)
+    public async Task<IActionResult> GetCommentById(int id)
     {
-        return await _service.GetCommentById(id);
+        var result = await _service.GetCommentById(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("GetComments")]
-    public async Task<Responce<List<GetCommentDto>>> GetComments()
+    public async Task<IActionResult> GetComments()
     {
-        return await _service.GetComments();
+        var result = await _service.GetComments();
+        return StatusCode((int)result.StatusCode, result);
     }
 }

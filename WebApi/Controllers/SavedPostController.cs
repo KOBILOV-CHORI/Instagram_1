@@ -15,28 +15,33 @@ public class SavedPostController : ControllerBase
         _service = service;
     }
     [HttpPost("AddSavedPost")]
-    public async Task<GetSavedPostDto> AddSavedPost(AddSavedPostDto savedPost)
+    public async Task<IActionResult> AddSavedPost(AddSavedPostDto savedPost)
     {
-        return await _service.AddSavedPost(savedPost);
+        var result = await _service.AddSavedPost(savedPost);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpPut("UpdateSavedPost")]
-    public async Task<GetSavedPostDto> UpdateSavedPost(AddSavedPostDto savedPost)
+    public async Task<IActionResult> UpdateSavedPost(AddSavedPostDto savedPost)
     {
-        return await _service.UpdateSavedPost(savedPost);
+        var result = await _service.UpdateSavedPost(savedPost);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpDelete("DeleteSavedPost")]
-    public async Task<bool> DeleteSavedPost(int id)
+    public async Task<IActionResult> DeleteSavedPost(int id)
     {
-        return await _service.DeleteSavedPost(id);
+        var result = await _service.DeleteSavedPost(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("GetSavedPostById")]
-    public async Task<GetSavedPostDto> GetSavedPostById(int id)
+    public async Task<IActionResult> GetSavedPostById(int id)
     {
-        return await _service.GetSavedPostById(id);
+        var result = await _service.GetSavedPostById(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("GetSavedPosts")]
-    public async Task<List<GetSavedPostDto>> GetSavedPosts()
+    public async Task<IActionResult> GetSavedPosts()
     {
-        return await _service.GetSavedPosts();
+        var result = await _service.GetSavedPosts();
+        return StatusCode((int)result.StatusCode, result);
     }
 }

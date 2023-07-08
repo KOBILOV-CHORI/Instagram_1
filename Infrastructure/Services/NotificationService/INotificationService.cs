@@ -1,12 +1,13 @@
 using Domain.Dtos.NotificationDtos;
+using Domain.Wrapper;
 
 namespace Infrastructure.Services.NotificationService;
 
 public interface INotificationService
 {
-    public Task<GetNotificationDto> AddNotification(AddNotificationDto Notification);
-    public Task<GetNotificationDto> UpdateNotification(AddNotificationDto Notification);
-    public Task<bool> DeleteNotification(int id);
-    public Task<GetNotificationDto> GetNotificationById(int id);
-    public Task<List<GetNotificationDto>> GetNotifications();
+    public Task<Responce<GetNotificationDto>> AddNotification(AddNotificationDto Notification);
+    public Task<Responce<GetNotificationDto>> UpdateNotification(AddNotificationDto Notification);
+    public Task<Responce<bool>> DeleteNotification(int id);
+    public Task<Responce<GetNotificationDto>> GetNotificationById(int id);
+    public Task<Responce<List<GetNotificationDto>>> GetNotifications();
 }

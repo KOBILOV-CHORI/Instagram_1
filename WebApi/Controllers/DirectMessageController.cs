@@ -14,28 +14,33 @@ public class DirectMessageController : ControllerBase
         _service = service;
     }
     [HttpPost("AddDirectMessage")]
-    public async Task<GetDirectMessageDto> AddDirectMessage(AddDirectMessageDto directMessage)
+    public async Task<IActionResult> AddDirectMessage(AddDirectMessageDto directMessage)
     {
-        return await _service.AddDirectMessage(directMessage);
+        var result = await _service.AddDirectMessage(directMessage);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpPut("UpdateDirectMessage")]
-    public async Task<GetDirectMessageDto> UpdateDirectMessage(AddDirectMessageDto directMessage)
+    public async Task<IActionResult> UpdateDirectMessage(AddDirectMessageDto directMessage)
     {
-        return await _service.UpdateDirectMessage(directMessage);
+        var result = await _service.UpdateDirectMessage(directMessage);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpDelete("DeleteDirectMessage")]
-    public async Task<bool> DeleteDirectMessage(int id)
+    public async Task<IActionResult> DeleteDirectMessage(int id)
     {
-        return await _service.DeleteDirectMessage(id);
+        var result = await _service.DeleteDirectMessage(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("GetDirectMessageById")]
-    public async Task<GetDirectMessageDto> GetDirectMessageById(int id)
+    public async Task<IActionResult> GetDirectMessageById(int id)
     {
-        return await _service.GetDirectMessageById(id);
+        var result = await _service.GetDirectMessageById(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("GetDirectMessages")]
-    public async Task<List<GetDirectMessageDto>> GetDirectMessages()
+    public async Task<IActionResult> GetDirectMessages()
     {
-        return await _service.GetDirectMessages();
+        var result = await _service.GetDirectMessages();
+        return StatusCode((int)result.StatusCode, result);
     }
 }

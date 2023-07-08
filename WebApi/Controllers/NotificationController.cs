@@ -15,28 +15,33 @@ public class NotificationController : ControllerBase
         _service = service;
     }
     [HttpPost("AddNotification")]
-    public async Task<GetNotificationDto> AddNotification(AddNotificationDto notification)
+    public async Task<IActionResult> AddNotification(AddNotificationDto notification)
     {
-        return await _service.AddNotification(notification);
+        var result = await _service.AddNotification(notification);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpPut("UpdateNotification")]
-    public async Task<GetNotificationDto> UpdateNotification(AddNotificationDto notification)
+    public async Task<IActionResult> UpdateNotification(AddNotificationDto notification)
     {
-        return await _service.UpdateNotification(notification);
+        var result = await _service.UpdateNotification(notification);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpDelete("DeleteNotification")]
-    public async Task<bool> DeleteNotification(int id)
+    public async Task<IActionResult> DeleteNotification(int id)
     {
-        return await _service.DeleteNotification(id);
+        var result = await _service.DeleteNotification(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("GetNotificationById")]
-    public async Task<GetNotificationDto> GetNotificationById(int id)
+    public async Task<IActionResult> GetNotificationById(int id)
     {
-        return await _service.GetNotificationById(id);
+        var result = await _service.GetNotificationById(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("GetNotifications")]
-    public async Task<List<GetNotificationDto>> GetNotifications()
+    public async Task<IActionResult> GetNotifications()
     {
-        return await _service.GetNotifications();
+        var result = await _service.GetNotifications();
+        return StatusCode((int)result.StatusCode, result);
     }
 }

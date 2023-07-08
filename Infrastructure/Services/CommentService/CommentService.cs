@@ -31,41 +31,68 @@ public class CommentService : ICommentService
         }
         catch (Exception e)
         {
-            var errorResponce = new Responce<GetCommentDto>(HttpStatusCode.InternalServerError, e.Message);
-            return StatusCode((int)HttpStatusCode.InternalServerError, errorResponce);
+            return new Responce<GetCommentDto>(HttpStatusCode.InternalServerError, e.Message);
         }
     }
 
     public async Task<Responce<GetCommentDto>> UpdateComment(AddCommentDto comment)
     {
-        var find = await _context.Comments.FindAsync(comment.Id);
-        _mapper.Map(comment, find);
-        _context.Entry(find).State = EntityState.Modified;
-        var result = _mapper.Map<GetCommentDto>(find);
-        return new Responce<GetCommentDto>(result);
+        try
+        {
+            var find = await _context.Comments.FindAsync(comment.Id);
+            _mapper.Map(comment, find);
+            _context.Entry(find).State = EntityState.Modified;
+            var result = _mapper.Map<GetCommentDto>(find);
+            return new Responce<GetCommentDto>(result);
+        }
+        catch (Exception e)
+        {
+            return new Responce<GetCommentDto>(HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 
     public async Task<Responce<bool>> DeleteComment(int id)
     {
-        var find = await _context.Comments.FindAsync(id);
-        if (find == null) return new Responce<bool>(false);
-        _context.Comments.Remove(find);
-        await _context.SaveChangesAsync();
-        return new Responce<bool>(true);
+        try
+        {
+            var find = await _context.Comments.FindAsync(id);
+            if (find == null) return new Responce<bool>(false);
+            _context.Comments.Remove(find);
+            await _context.SaveChangesAsync();
+            return new Responce<bool>(true);
+        }
+        catch (Exception e)
+        {
+            return new Responce<bool>(HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 
     public async Task<Responce<GetCommentDto>> GetCommentById(int id)
     {
-        var find = await _context.Comments.FindAsync(id);
-        if (find == null) return new Responce<GetCommentDto>(new GetCommentDto());
-        var result = _mapper.Map<GetCommentDto>(find);
-        return new Responce<GetCommentDto>(result);
+        try
+        {
+            var find = await _context.Comments.FindAsync(id);
+            if (find == null) return new Responce<GetCommentDto>(new GetCommentDto());
+            var result = _mapper.Map<GetCommentDto>(find);
+            return new Responce<GetCommentDto>(result);
+        }
+        catch (Exception e)
+        {
+            return new Responce<GetCommentDto>(HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 
     public async Task<Responce<List<GetCommentDto>>> GetComments()
     {
-        var model = _context.Comments.ToList();
-        var result = _mapper.Map<List<GetCommentDto>>(model);
-        return new Responce<List<GetCommentDto>>(result);
+        try
+        {
+            var model = _context.Comments.ToList();
+            var result = _mapper.Map<List<GetCommentDto>>(model);
+            return new Responce<List<GetCommentDto>>(result);
+        }
+        catch (Exception e)
+        {
+            return new Responce<List<GetCommentDto>>(HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 }

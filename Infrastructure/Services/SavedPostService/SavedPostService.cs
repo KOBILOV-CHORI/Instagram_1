@@ -1,6 +1,9 @@
+using System.Net;
 using AutoMapper;
+using Domain.Dtos.PostDtos;
 using Domain.Dtos.SavedPostDtos;
 using Domain.Entities;
+using Domain.Wrapper;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,45 +19,81 @@ public class SavedPostService : ISavedPostService
         _context = context;
         _mapper = mapper;
     }
-    public async Task<GetSavedPostDto> AddSavedPost(AddSavedPostDto savedPost)
+
+    public async Task<Responce<GetSavedPostDto>> AddSavedPost(AddSavedPostDto savedPost)
     {
-        var model = _mapper.Map<SavedPost>(savedPost);
-        await _context.SavedPosts.AddAsync(model);
-        await _context.SaveChangesAsync();
-        var result = _mapper.Map<GetSavedPostDto>(model);
-        return result;
+        try
+        {
+            var model = _mapper.Map<SavedPost>(savedPost);
+            await _context.SavedPosts.AddAsync(model);
+            await _context.SaveChangesAsync();
+            var result = _mapper.Map<GetSavedPostDto>(model);
+            return new Responce<GetSavedPostDto>(result);
+        }
+        catch (Exception e)
+        {
+            return new Responce<GetSavedPostDto>(HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 
-    public async Task<GetSavedPostDto> UpdateSavedPost(AddSavedPostDto savedPost)
+    public async Task<Responce<GetSavedPostDto>> UpdateSavedPost(AddSavedPostDto savedPost)
     {
-        var find = await _context.SavedPosts.FindAsync(savedPost.Id);
-        _mapper.Map(savedPost, find);
-        _context.Entry(find).State = EntityState.Modified;
-        var result = _mapper.Map<GetSavedPostDto>(find);
-        return result;
+        try
+        {
+            var find = await _context.SavedPosts.FindAsync(savedPost.Id);
+            _mapper.Map(savedPost, find);
+            _context.Entry(find).State = EntityState.Modified;
+            var result = _mapper.Map<GetSavedPostDto>(find);
+            return new Responce<GetSavedPostDto>(result);
+        }
+        catch (Exception e)
+        {
+            return new Responce<GetSavedPostDto>(HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 
-    public async Task<bool> DeleteSavedPost(int id)
+    public async Task<Responce<bool>> DeleteSavedPost(int id)
     {
-        var find = await _context.SavedPosts.FindAsync(id);
-        if (find == null) return false;
-        _context.SavedPosts.Remove(find);
-        await _context.SaveChangesAsync();
-        return true;
+        try
+        {
+            var find = await _context.SavedPosts.FindAsync(id);
+            if (find == null) return new Responce<bool>(false);
+            _context.SavedPosts.Remove(find);
+            await _context.SaveChangesAsync();
+            return new Responce<bool>(true);
+        }
+        catch (Exception e)
+        {
+            return new Responce<bool>(HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 
-    public async Task<GetSavedPostDto> GetSavedPostById(int id)
+    public async Task<Responce<GetSavedPostDto>> GetSavedPostById(int id)
     {
-        var find = await _context.SavedPosts.FindAsync(id);
-        if (find == null) return new GetSavedPostDto();
-        var result = _mapper.Map<GetSavedPostDto>(find);
-        return result;
+        try
+        {
+            var find = await _context.SavedPosts.FindAsync(id);
+            if (find == null) return new Responce<GetSavedPostDto>(new GetSavedPostDto());
+            var result = _mapper.Map<GetSavedPostDto>(find);
+            return new Responce<GetSavedPostDto>(result);
+        }
+        catch (Exception e)
+        {
+            return new Responce<GetSavedPostDto>(HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 
-    public async Task<List<GetSavedPostDto>> GetSavedPosts()
+    public async Task<Responce<List<GetSavedPostDto>>> GetSavedPosts()
     {
-        var model = _context.SavedPosts.ToList();
-        var result = _mapper.Map<List<GetSavedPostDto>>(model);
-        return result;
+        try
+        {
+            var model = _context.SavedPosts.ToList();
+            var result = _mapper.Map<List<GetSavedPostDto>>(model);
+            return new Responce<List<GetSavedPostDto>>(result);
+        }
+        catch (Exception e)
+        {
+            return new Responce<List<GetSavedPostDto>>(HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 }

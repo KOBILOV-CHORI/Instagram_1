@@ -15,28 +15,33 @@ public class StoryController : ControllerBase
         _service = service;
     }
     [HttpPost("AddStory")]
-    public async Task<GetStoryDto> AddStory(AddStoryDto story)
+    public async Task<IActionResult> AddStory(AddStoryDto story)
     {
-        return await _service.AddStory(story);
+        var result = await _service.AddStory(story);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpPut("UpdateStory")]
-    public async Task<GetStoryDto> UpdateStory(AddStoryDto story)
+    public async Task<IActionResult> UpdateStory(AddStoryDto story)
     {
-        return await _service.UpdateStory(story);
+        var result = await _service.UpdateStory(story);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpDelete("DeleteStory")]
-    public async Task<bool> DeleteStory(int id)
+    public async Task<IActionResult> DeleteStory(int id)
     {
-        return await _service.DeleteStory(id);
+        var result = await _service.DeleteStory(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("GetStoryById")]
-    public async Task<GetStoryDto> GetStoryById(int id)
+    public async Task<IActionResult> GetStoryById(int id)
     {
-        return await _service.GetStoryById(id);
+        var result = await _service.GetStoryById(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("GetStorys")]
-    public async Task<List<GetStoryDto>> GetStories()
+    public async Task<IActionResult> GetStories()
     {
-        return await _service.GetStories();
+        var result = await _service.GetStories();
+        return StatusCode((int)result.StatusCode, result);
     }
 }

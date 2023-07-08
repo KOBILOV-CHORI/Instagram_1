@@ -15,28 +15,33 @@ public class HashtagController : ControllerBase
         _service = service;
     }
     [HttpPost("AddHashtag")]
-    public async Task<GetHashtagDto> AddHashtag(AddHashtagDto hashtag)
+    public async Task<IActionResult> AddHashtag(AddHashtagDto hashtag)
     {
-        return await _service.AddHashtag(hashtag);
+        var result = await _service.AddHashtag(hashtag);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpPut("UpdateHashtag")]
-    public async Task<GetHashtagDto> UpdateHashtag(AddHashtagDto hashtag)
+    public async Task<IActionResult> UpdateHashtag(AddHashtagDto hashtag)
     {
-        return await _service.UpdateHashtag(hashtag);
+        var result = await _service.UpdateHashtag(hashtag);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpDelete("DeleteHashtag")]
-    public async Task<bool> DeleteHashtag(int id)
+    public async Task<IActionResult> DeleteHashtag(int id)
     {
-        return await _service.DeleteHashtag(id);
+        var result = await _service.DeleteHashtag(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("GetHashtagById")]
-    public async Task<GetHashtagDto> GetHashtagById(int id)
+    public async Task<IActionResult> GetHashtagById(int id)
     {
-        return await _service.GetHashtagById(id);
+        var result = await _service.GetHashtagById(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("GetHashtags")]
-    public async Task<List<GetHashtagDto>> GetHashtags()
+    public async Task<IActionResult> GetHashtags()
     {
-        return await _service.GetHashtags();
+        var result = await _service.GetHashtags();
+        return StatusCode((int)result.StatusCode, result);
     }
 }

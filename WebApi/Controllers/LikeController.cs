@@ -15,28 +15,35 @@ public class LikeController : ControllerBase
         _service = service;
     }
     [HttpPost("AddLike")]
-    public async Task<GetLikeDto> AddLike(AddLikeDto like)
+    public async Task<IActionResult> AddLike(AddLikeDto like)
     {
-        return await _service.AddLike(like);
+        var result = await _service.AddLike(like);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpPut("UpdateLike")]
-    public async Task<GetLikeDto> UpdateLike(AddLikeDto like)
+    public async Task<IActionResult> UpdateLike(AddLikeDto like)
     {
-        return await _service.UpdateLike(like);
+        var result = await _service.UpdateLike(like);
+        return StatusCode((int)result.StatusCode, result);
+
     }
     [HttpDelete("DeleteLike")]
-    public async Task<bool> DeleteLike(int id)
+    public async Task<IActionResult> DeleteLike(int id)
     {
-        return await _service.DeleteLike(id);
+        var result = await _service.DeleteLike(id);
+        return StatusCode((int)result.StatusCode, result);
+
     }
     [HttpGet("GetLikeById")]
-    public async Task<GetLikeDto> GetLikeById(int id)
+    public async Task<IActionResult> GetLikeById(int id)
     {
-        return await _service.GetLikeById(id);
+        var result = await _service.GetLikeById(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("GetLikes")]
-    public async Task<List<GetLikeDto>> GetLikes()
+    public async Task<IActionResult> GetLikes()
     {
-        return await _service.GetLikes();
+        var result = await _service.GetLikes();
+        return StatusCode((int)result.StatusCode, result);
     }
 }

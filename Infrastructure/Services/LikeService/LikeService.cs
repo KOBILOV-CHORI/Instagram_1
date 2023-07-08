@@ -1,6 +1,9 @@
+using System.Net;
 using AutoMapper;
+using Domain.Dtos.HashtagDtos;
 using Domain.Dtos.LikeDtos;
 using Domain.Entities;
+using Domain.Wrapper;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,45 +19,81 @@ public class LikeService : ILikeService
         _context = context;
         _mapper = mapper;
     }
-    public async Task<GetLikeDto> AddLike(AddLikeDto like)
+
+    public async Task<Responce<GetLikeDto>> AddLike(AddLikeDto like)
     {
-        var model = _mapper.Map<Like>(like);
-        await _context.Likes.AddAsync(model);
-        await _context.SaveChangesAsync();
-        var result = _mapper.Map<GetLikeDto>(model);
-        return result;
+        try
+        {
+            var model = _mapper.Map<Like>(like);
+            await _context.Likes.AddAsync(model);
+            await _context.SaveChangesAsync();
+            var result = _mapper.Map<GetLikeDto>(model);
+            return new Responce<GetLikeDto>(result);
+        }
+        catch (Exception e)
+        {
+            return new Responce<GetLikeDto>(HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 
-    public async Task<GetLikeDto> UpdateLike(AddLikeDto like)
+    public async Task<Responce<GetLikeDto>> UpdateLike(AddLikeDto like)
     {
-        var find = await _context.Likes.FindAsync(like.Id);
-        _mapper.Map(like, find);
-        _context.Entry(find).State = EntityState.Modified;
-        var result = _mapper.Map<GetLikeDto>(find);
-        return result;
+        try
+        {
+            var find = await _context.Likes.FindAsync(like.Id);
+            _mapper.Map(like, find);
+            _context.Entry(find).State = EntityState.Modified;
+            var result = _mapper.Map<GetLikeDto>(find);
+            return new Responce<GetLikeDto>(result);
+        }
+        catch (Exception e)
+        {
+            return new Responce<GetLikeDto>(HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 
-    public async Task<bool> DeleteLike(int id)
+    public async Task<Responce<bool>> DeleteLike(int id)
     {
-        var find = await _context.Likes.FindAsync(id);
-        if (find == null) return false;
-        _context.Likes.Remove(find);
-        await _context.SaveChangesAsync();
-        return true;
+        try
+        {
+            var find = await _context.Likes.FindAsync(id);
+            if (find == null) return new Responce<bool>(false);
+            _context.Likes.Remove(find);
+            await _context.SaveChangesAsync();
+            return new Responce<bool>(true);
+        }
+        catch (Exception e)
+        {
+            return new Responce<bool>(HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 
-    public async Task<GetLikeDto> GetLikeById(int id)
+    public async Task<Responce<GetLikeDto>> GetLikeById(int id)
     {
-        var find = await _context.Likes.FindAsync(id);
-        if (find == null) return new GetLikeDto();
-        var result = _mapper.Map<GetLikeDto>(find);
-        return result;
+        try
+        {
+            var find = await _context.Likes.FindAsync(id);
+            if (find == null) return new Responce<GetLikeDto>(new GetLikeDto());
+            var result = _mapper.Map<GetLikeDto>(find);
+            return new Responce<GetLikeDto>(result);
+        }
+        catch (Exception e)
+        {
+            return new Responce<GetLikeDto>(HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 
-    public async Task<List<GetLikeDto>> GetLikes()
+    public async Task<Responce<List<GetLikeDto>>> GetLikes()
     {
-        var model = _context.Likes.ToList();
-        var result = _mapper.Map<List<GetLikeDto>>(model);
-        return result;
+        try
+        {
+            var model = _context.Likes.ToList();
+            var result = _mapper.Map<List<GetLikeDto>>(model);
+            return new Responce<List<GetLikeDto>>(result);
+        }
+        catch (Exception e)
+        {
+            return new Responce<List<GetLikeDto>>(HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 }

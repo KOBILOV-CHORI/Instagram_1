@@ -1,6 +1,8 @@
+using System.Net;
 using AutoMapper;
 using Domain.Dtos.ExploreDtos;
 using Domain.Entities;
+using Domain.Wrapper;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,45 +18,80 @@ public class ExploreService : IExploreService
         _context = context;
         _mapper = mapper;
     }
-    public async Task<GetExploreDto> AddExplore(AddExploreDto comment)
+    public async Task<Responce<GetExploreDto>> AddExplore(AddExploreDto comment)
     {
+        try
+        {
         var model = _mapper.Map<Explore>(comment);
         await _context.Explores.AddAsync(model);
         await _context.SaveChangesAsync();
         var result = _mapper.Map<GetExploreDto>(model);
-        return result;
+        return new Responce<GetExploreDto>(result);
+        }
+        catch (Exception e)
+        {
+            return new Responce<GetExploreDto>(HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 
-    public async Task<GetExploreDto> UpdateExplore(AddExploreDto comment)
+    public async Task<Responce<GetExploreDto>> UpdateExplore(AddExploreDto comment)
     {
+        try
+        {
         var find = await _context.Explores.FindAsync(comment.Id);
         _mapper.Map(comment, find);
         _context.Entry(find).State = EntityState.Modified;
         var result = _mapper.Map<GetExploreDto>(find);
-        return result;
+        return new Responce<GetExploreDto>(result);
+        }
+        catch (Exception e)
+        {
+            return new Responce<GetExploreDto>(HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 
-    public async Task<bool> DeleteExplore(int id)
+    public async Task<Responce<bool>> DeleteExplore(int id)
     {
+        try
+        {
         var find = await _context.Explores.FindAsync(id);
-        if (find == null) return false;
+        if (find == null) return new Responce<bool>(false);
         _context.Explores.Remove(find);
         await _context.SaveChangesAsync();
-        return true;
+        return new Responce<bool>(true);
+        }
+        catch (Exception e)
+        {
+            return new Responce<bool>(HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 
-    public async Task<GetExploreDto> GetExploreById(int id)
+    public async Task<Responce<GetExploreDto>> GetExploreById(int id)
     {
+        try
+        {
         var find = await _context.Explores.FindAsync(id);
-        if (find == null) return new GetExploreDto();
+        if (find == null) return new Responce<GetExploreDto>(new GetExploreDto());
         var result = _mapper.Map<GetExploreDto>(find);
-        return result;
+        return new Responce<GetExploreDto>(result);
+        }
+        catch (Exception e)
+        {
+            return new Responce<GetExploreDto>(HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 
-    public async Task<List<GetExploreDto>> GetExplores()
+    public async Task<Responce<List<GetExploreDto>>> GetExplores()
     {
+        try
+        {
         var model = _context.Explores.ToList();
         var result = _mapper.Map<List<GetExploreDto>>(model);
-        return result;
+        return new Responce<List<GetExploreDto>>(result);
+        }
+        catch (Exception e)
+        {
+            return new Responce<List<GetExploreDto>>(HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 }
